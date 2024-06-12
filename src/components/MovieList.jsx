@@ -42,7 +42,7 @@ const MovieList = () => {
     }
 
     useEffect(() => {
-        if(!displaySearch){
+        if(searchQuery===''){
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
             fetchData(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US&page=`);
@@ -67,6 +67,7 @@ const MovieList = () => {
         }
     }
 
+    /*
     const handleNowPlaying = () => {
         setDisplaySearch(false);
         if(page === 1){
@@ -74,12 +75,13 @@ const MovieList = () => {
         } else {
             reset();
         }
-    }
+    }*/
 
+    /*
     const handleSearchButton = () => {
         setDisplaySearch(true);
         reset();
-    }
+    }*/
 
     const toggleModal = (movie) => {
         if(modalOpen){
@@ -92,11 +94,7 @@ const MovieList = () => {
 
     return (
         <div>
-            <div className='switch-buttons-container'>
-                <button className='switch-now-playing' onClick={handleNowPlaying}>Now Playing</button>
-                <button className='switch-search' onClick={handleSearchButton}>Search</button>
-            </div>
-            <div className={`search-bar-container ${displaySearch ? '' : 'search-bar-container-hide'}`}>
+            <div className='search-bar-container'>
                 <input className='search-bar' type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search for a movie..."/>
                 <button className='search-bar-submit' onClick={handleSearchSubmit}>Submit</button>
             </div>
@@ -114,5 +112,13 @@ const MovieList = () => {
         </div>
     )
 }
+
+/*
+<div className='switch-buttons-container'>
+    <button className='switch-now-playing' onClick={handleNowPlaying}>Now Playing</button>
+    <button className='switch-search' onClick={handleSearchButton}>Search</button>
+</div>
+<div className={`search-bar-container ${displaySearch ? '' : 'search-bar-container-hide'}`}>
+*/
 
 export default MovieList;

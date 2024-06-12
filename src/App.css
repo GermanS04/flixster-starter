@@ -13,8 +13,7 @@
 }
 
 main{
-  display: flex;
-  justify-content: center;
+  width: 100vw;
 }
 
 @media (max-width: 600px) {
