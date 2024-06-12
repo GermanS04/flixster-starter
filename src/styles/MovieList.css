@@ -1,0 +1,83 @@
+
+.movie-list-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 75vw;
+    height: 100%;
+    gap: 3rem;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.movie-load-button-container{
+    align-items: center;
+    padding-bottom: 3rem;
+}
+
+.movie-load-button{
+    width: 7.5vw;
+    height: 4vh;
+    border: none;
+    border-radius: 5rem;
+}
+
+.search-bar-container{
+    height: 4vh;
+    padding: 2rem 0;
+}
+
+.search-bar{
+    border: none;
+    padding: 0;
+    height: 100%;
+    width: 35vw;
+    border-radius: 5rem 0 0 5rem;
+    padding-left: 2rem;
+}
+
+.search-bar::placeholder{
+
+}
+
+.search-bar:focus{
+    outline: none;
+}
+
+.search-bar-container-hide{
+    display: none
+}
+
+.search-bar-submit{
+    border: none;
+    height: 100%;
+    width: 5vw;
+    padding: 0;
+    border-radius: 0 5rem 5rem 0;
+}
+
+.switch-buttons-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0 0 0;
+    gap: 5rem;
+}
+
+.switch-buttons-container button{
+    border-radius: 5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+}
+
+.modal-overlay{
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+}
