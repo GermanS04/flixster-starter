@@ -38,7 +38,7 @@
 }
 
 .search-bar::placeholder{
-
+    color: lightgray;
 }
 
 .search-bar:focus{
