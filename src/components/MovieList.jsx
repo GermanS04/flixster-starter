@@ -68,12 +68,16 @@ const MovieList = () => {
 
     const handleNowPlaying = () => {
         setDisplaySearch(false);
-        reset();
+        if(page === 1){
+            fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
+        } else {
+            reset();
+        }
     }
 
     const handleSearchButton = () => {
-        reset();
         setDisplaySearch(true);
+        reset();
     }
 
     return (
