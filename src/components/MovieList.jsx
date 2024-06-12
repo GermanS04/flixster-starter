@@ -1,6 +1,8 @@
 import '../styles/MovieList.css';
 import { useState, useEffect } from 'react';
 import MovieCard from './MovieCard.jsx';
+import Modal from './Modal.jsx';
+
 
 const MovieList = () => {
 
@@ -8,6 +10,8 @@ const MovieList = () => {
     const [page, setPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [displaySearch, setDisplaySearch] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMovie, setModalMovie] = useState(undefined);
 
     const options = {
         method: 'GET',
@@ -23,7 +27,6 @@ const MovieList = () => {
     }
 
     const fetchData = async (URL) => {
-        console.log('fetching page: ' + page);
         const resp = await fetch(URL + page.toString(), options);
 
         const Data = await resp.json();
@@ -39,9 +42,7 @@ const MovieList = () => {
     }
 
     useEffect(() => {
-        console.log('use effect page trigger: ' + page);
         if(!displaySearch){
-            console.log('displaySearch fetch page: ' + page);
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
             fetchData(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US&page=`);
@@ -80,6 +81,15 @@ const MovieList = () => {
         reset();
     }
 
+    const toggleModal = (movie) => {
+        if(modalOpen){
+            setModalOpen(false);
+        } else {
+            setModalOpen(!modalOpen);
+            setModalMovie(movie.id);
+        }
+    }
+
     return (
         <div>
             <div className='switch-buttons-container'>
@@ -93,13 +103,14 @@ const MovieList = () => {
             <div className='movie-list-container'>
                 {data?.map((movie) => {
                     return (
-                        <MovieCard key={movie.id} props={movie}/>
+                        <MovieCard key={movie.id} props={movie} onModalToggle={toggleModal}/>
                     )
                 })}
             </div>
             <div className='movie-load-button-container'>
                 <button className='movie-load-button' onClick={handleLoadMore}>Load More</button>
             </div>
+            {modalOpen && <Modal movieID={modalMovie} onModalToggle = {toggleModal}/>}
         </div>
     )
 }
