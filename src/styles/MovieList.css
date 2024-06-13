@@ -14,7 +14,7 @@
 
 .movie-load-button-container{
     align-items: center;
-    padding-bottom: 3rem;
+    padding: 3rem 0;
 }
 
 .movie-load-button{
@@ -24,9 +24,13 @@
     border-radius: 5rem;
 }
 
-.search-bar-container{
+.inputs-container{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
     height: 4vh;
     padding: 2rem 0;
+    justify-content: center;
 }
 
 .search-bar{

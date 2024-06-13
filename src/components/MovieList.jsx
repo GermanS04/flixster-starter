@@ -12,6 +12,9 @@ const MovieList = () => {
     const [displaySearch, setDisplaySearch] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMovie, setModalMovie] = useState(undefined);
+    const [genresList, setGenresList] = useState(undefined);
+    const [genre, setGenre] = useState('');
+    const [sort, setSort] = useState('');
 
     const options = {
         method: 'GET',
@@ -24,12 +27,16 @@ const MovieList = () => {
     const reset = () => {
         setPage(1);
         setData(undefined);
+        setGenre('Genre');
+        setSearchQuery('');
     }
 
     const fetchData = async (URL) => {
         const resp = await fetch(URL + page.toString(), options);
 
         const Data = await resp.json();
+
+        console.log('fetching data for ' + URL + ' on page ' + page.toString());
 
         if (page === 1){
             reset();
@@ -41,17 +48,51 @@ const MovieList = () => {
         }
     }
 
+    const fetchDataFiltered = async (URL) => {
+        URL += page.toString();
+        URL += `&with_genres=${genre}`;
+
+        const resp = await fetch(URL, options);
+
+        const Data = await resp.json();
+
+        if (page === 1){
+            reset();
+            setData(Data.results);
+        } else {
+            const IDs = data?.map(item => item.id);
+            const filteredData = Data.results?.filter(item => !IDs?.includes(item.id));
+            setData(prevData => [...prevData, ...filteredData]);
+        }
+
+    }
+
+    const fetchGenresList = async () => {
+        const resp = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
+
+        const Data = await resp.json();
+
+        setGenresList(Data.genres);
+    }
+
     useEffect(() => {
         if(searchQuery===''){
-            fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
+            if(genre !== 'Genre'){
+                fetchDataFiltered('https://api.themoviedb.org/3/discover/movie?language=en-US&page=');
+            } else {
+                fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
+            }
         } else {
             fetchData(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US&page=`);
         }
-    }, [page]);
+    }, [page, genre]);
+
+    useEffect(() => {
+        fetchGenresList();
+    }, []);
 
     const handleLoadMore = () => {
         setPage(page + 1);
-
     }
 
     const handleSearchChange = (e) => {
@@ -67,21 +108,20 @@ const MovieList = () => {
         }
     }
 
-    /*
     const handleNowPlaying = () => {
+        console.log('clicked now playing');
         setDisplaySearch(false);
         if(page === 1){
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
             reset();
         }
-    }*/
+    }
 
-    /*
     const handleSearchButton = () => {
         setDisplaySearch(true);
         reset();
-    }*/
+    }
 
     const toggleModal = (movie) => {
         if(modalOpen){
@@ -92,11 +132,42 @@ const MovieList = () => {
         }
     }
 
+    const genreOnChange = (e) => {
+        setGenre(e.target.value);
+    }
+
+    const sortOnChange = (e) => {
+        setSort(e.target.value);
+    }
+
     return (
         <div>
-            <div className='search-bar-container'>
-                <input className='search-bar' type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search for a movie..."/>
-                <button className='search-bar-submit' onClick={handleSearchSubmit}>Submit</button>
+            <div className='switch-buttons-container'>
+                <button className='switch-now-playing' onClick={handleNowPlaying}>Now Playing</button>
+                <button className='switch-search' onClick={handleSearchButton}>Search</button>
+            </div>
+            <div className='inputs-container'>
+            <div className={`search-bar-container ${displaySearch ? '' : 'search-bar-container-hide'}`}>
+                    <input className='search-bar' type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search for a movie..."/>
+                    <button className='search-bar-submit' onClick={handleSearchSubmit}>Submit</button>
+                </div>
+                <div>
+                    <select onChange={genreOnChange} value={genre}>
+                        <option value="Genre">Genre</option>
+                        {genresList?.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <select onChange={sortOnChange}>
+                        <option value="Sort">Sort By</option>
+                        <option value="popularity.desc">Popularity</option>
+                        <option value="original_title.asc">Title</option>
+                        <option value="vote_average.desc">Highest Rated</option>
+                        <option value="vote_average.asc">Lowest Rated</option>
+                    </select>
+                </div>
             </div>
             <div className='movie-list-container'>
                 {data?.map((movie) => {
