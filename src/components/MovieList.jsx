@@ -27,16 +27,15 @@ const MovieList = () => {
     const reset = () => {
         setPage(1);
         setData(undefined);
-        setGenre('Genre');
+        //setGenre('Genre');
         setSearchQuery('');
+        //setSort('Sort');
     }
 
     const fetchData = async (URL) => {
         const resp = await fetch(URL + page.toString(), options);
 
         const Data = await resp.json();
-
-        console.log('fetching data for ' + URL + ' on page ' + page.toString());
 
         if (page === 1){
             reset();
@@ -50,7 +49,13 @@ const MovieList = () => {
 
     const fetchDataFiltered = async (URL) => {
         URL += page.toString();
-        URL += `&with_genres=${genre}`;
+        if(genre !== 'Genre'){
+            URL += `&with_genres=${genre}`;
+        }
+        if(sort !== "Sort"){
+            URL += `&sort_by=${sort}`;
+        }
+
 
         const resp = await fetch(URL, options);
 
@@ -77,15 +82,15 @@ const MovieList = () => {
 
     useEffect(() => {
         if(searchQuery===''){
-            if(genre !== 'Genre'){
+            if(genre !== 'Genre' || sort !== 'Sort'){
                 fetchDataFiltered('https://api.themoviedb.org/3/discover/movie?language=en-US&page=');
-            } else {
+            } else if (genre === 'Genre' && sort === 'Sort'){
                 fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
             }
         } else {
             fetchData(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US&page=`);
         }
-    }, [page, genre]);
+    }, [page, genre, sort]);
 
     useEffect(() => {
         fetchGenresList();
@@ -109,13 +114,14 @@ const MovieList = () => {
     }
 
     const handleNowPlaying = () => {
-        console.log('clicked now playing');
         setDisplaySearch(false);
         if(page === 1){
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
             reset();
         }
+        setGenre('Genre');
+        setSort('Sort');
     }
 
     const handleSearchButton = () => {
@@ -160,7 +166,7 @@ const MovieList = () => {
                     </select>
                 </div>
                 <div>
-                    <select onChange={sortOnChange}>
+                    <select onChange={sortOnChange} value={sort}>
                         <option value="Sort">Sort By</option>
                         <option value="popularity.desc">Popularity</option>
                         <option value="original_title.asc">Title</option>
