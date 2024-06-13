@@ -30,6 +30,18 @@ const MovieList = () => {
         setData(undefined);
     }
 
+    const sortMoviesSearch = () => {
+        if(sort === 'popularity.desc'){
+            setData(wholeData?.sort((a, b) => (b.popularity - a.popularity)));
+        } else if(sort === 'original_title.asc'){
+            setData(wholeData?.sort((a, b) => (a.original_title > b.original_title ? 1 : -1)));
+        } else if(sort === 'vote_average.desc'){
+            setData(wholeData?.sort((a, b) => (b.vote_average - a.vote_average)));
+        } else if(sort === 'vote_average.asc'){
+            setData(wholeData?.sort((a, b) => (a.vote_average - b.vote_average)));
+        }
+    }
+
     const fetchData = async (URL) => {
         const resp = await fetch(URL + page.toString(), options);
 
@@ -39,11 +51,10 @@ const MovieList = () => {
             reset();
             setData(Data.results);
             setWholeData(Data.results);
-            console.log(wholeData);
             if(genre !== 'Genre'){
                 setData(Data.results?.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
-                filterBySortSearch(Data);
+                sortMoviesSearch();
             }
         } else {
             const IDs = wholeData?.map(item => item.id);
@@ -52,9 +63,8 @@ const MovieList = () => {
             if(genre !== 'Genre'){
                 setData(wholeData.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
-                filterBySortSearch(data);
+                sortMoviesSearch();
             } else {
-                console.log(wholeData);
                 setData(wholeData);
             }
         }
@@ -75,7 +85,6 @@ const MovieList = () => {
         const Data = await resp.json();
 
         if (page === 1){
-            reset();
             setData(Data.results);
         } else {
             const IDs = data?.map(item => item.id);
@@ -157,10 +166,12 @@ const MovieList = () => {
 
     const genreOnChange = (e) => {
         setGenre(e.target.value);
+        setPage(1);
     }
 
     const sortOnChange = (e) => {
         setSort(e.target.value);
+        setPage(1);
     }
 
     return (
