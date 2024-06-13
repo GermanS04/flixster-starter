@@ -15,6 +15,7 @@ const MovieList = () => {
     const [genresList, setGenresList] = useState(undefined);
     const [genre, setGenre] = useState('');
     const [sort, setSort] = useState('');
+    const [wholeData, setWholeData] = useState(undefined);
 
     const options = {
         method: 'GET',
@@ -27,9 +28,6 @@ const MovieList = () => {
     const reset = () => {
         setPage(1);
         setData(undefined);
-        //setGenre('Genre');
-        setSearchQuery('');
-        //setSort('Sort');
     }
 
     const fetchData = async (URL) => {
@@ -40,10 +38,25 @@ const MovieList = () => {
         if (page === 1){
             reset();
             setData(Data.results);
+            setWholeData(Data.results);
+            console.log(wholeData);
+            if(genre !== 'Genre'){
+                setData(Data.results?.filter(item => item?.genre_ids?.includes(parseInt(genre))));
+            } else if(sort !== "Sort"){
+                filterBySortSearch(Data);
+            }
         } else {
-            const IDs = data?.map(item => item.id);
+            const IDs = wholeData?.map(item => item.id);
             const filteredData = Data.results?.filter(item => !IDs?.includes(item.id));
-            setData(prevData => [...prevData, ...filteredData]);
+            setWholeData(prevData => [...prevData, ...filteredData]);
+            if(genre !== 'Genre'){
+                setData(wholeData.filter(item => item?.genre_ids?.includes(parseInt(genre))));
+            } else if(sort !== "Sort"){
+                filterBySortSearch(data);
+            } else {
+                console.log(wholeData);
+                setData(wholeData);
+            }
         }
     }
 
@@ -97,7 +110,7 @@ const MovieList = () => {
     }, []);
 
     const handleLoadMore = () => {
-        setPage(page + 1);
+        setPage(prevpage => prevpage + 1);
     }
 
     const handleSearchChange = (e) => {
@@ -115,17 +128,21 @@ const MovieList = () => {
 
     const handleNowPlaying = () => {
         setDisplaySearch(false);
+        setSearchQuery('');
+        setGenre('Genre');
+        setSort('Sort');
         if(page === 1){
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
             reset();
         }
-        setGenre('Genre');
-        setSort('Sort');
     }
 
     const handleSearchButton = () => {
         setDisplaySearch(true);
+        setGenre('Genre');
+        setSort('Sort');
+        setSearchQuery(' ');
         reset();
     }
 
