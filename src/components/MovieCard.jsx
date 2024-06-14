@@ -4,14 +4,10 @@ import { FaRegEye } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 
 
-const MovieCard = ({props: movie, onModalToggle, onLiked, onWatched}) => {
+const MovieCard = ({props: movie, onModalToggle, onLikedFunction, onWatchedFunction}) => {
     const imageURL = `http://image.tmdb.org/t/p/original${movie.poster_path}`;
     const [liked, setLiked] = useState(false);
     const [watched, setWatched] = useState(false);
-
-    useEffect(() => {
-        console.log(liked);
-    }, [liked]);
 
     const likedToggle = () => {
         setLiked(!liked);
@@ -34,10 +30,10 @@ const MovieCard = ({props: movie, onModalToggle, onLiked, onWatched}) => {
             </div>
             <div className='card-overlay' onClick={() => onModalToggle(movie)}/>
             <span>
-                <FaHeart className={`heart-icon ${liked ? 'heart-icon-selected' : ''}`} onClick={() =>{likedToggle(); onLiked(movie,liked); }} size={70}/>
+                <FaHeart className={`heart-icon ${liked ? 'heart-icon-selected' : ''}`} onClick={() =>{likedToggle(); onLikedFunction(movie,liked); }} size={70}/>
             </span>
             <span>
-                <FaRegEye className={`eye-icon ${watched ? 'eye-icon-selected' : ''}`} onClick={() => {watchedToggle(); onWatched(movie, watched)}} size={70}/>
+                <FaRegEye className={`eye-icon ${watched ? 'eye-icon-selected' : ''}`} onClick={() => {watchedToggle(); onWatchedFunction(movie, watched)}} size={70}/>
             </span>
 
         </div>

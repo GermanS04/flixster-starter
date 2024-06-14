@@ -18,11 +18,12 @@
 }
 
 .modal-content{
+    overflow: auto;
     position: fixed;
     top: 0;
     z-index: 100;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: #fefefe;
     margin: 7% auto;
     padding: 1.5rem;
@@ -31,6 +32,11 @@
     height: 75%;
     border-radius: 1rem;
     gap: 1rem;
+}
+
+.modal-content-img-text{
+    display: flex;
+    flex-direction: row;
 }
 
 .modal-main-content{

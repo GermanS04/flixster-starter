@@ -4,7 +4,7 @@ import MovieCard from './MovieCard.jsx';
 import Modal from './Modal.jsx';
 
 
-const MovieList = () => {
+const MovieList = (props) => {
 
     const [data, setData] = useState(undefined);
     const [page, setPage] = useState(1);
@@ -16,8 +16,8 @@ const MovieList = () => {
     const [genre, setGenre] = useState('');
     const [sort, setSort] = useState('');
     const [wholeData, setWholeData] = useState(undefined);
-    const [likedMovies, setLikedMovies] = useState([]);
-    const [watchedMovies, setWatchedMovies] = useState([]);
+    //const [likedMovies, setLikedMovies] = useState([]);
+    //const [watchedMovies, setWatchedMovies] = useState([]);
 
     const options = {
         method: 'GET',
@@ -41,16 +41,12 @@ const MovieList = () => {
 
     const fetchData = async (URL) => {
         const resp = await fetch(URL + page.toString(), options);
-        console.log(URL + page.toString());
-
         const Data = await resp.json();
 
         if (page === 1){
-            console.log('condition page equals 1');
-            //reset();
             setData(Data.results);
             setWholeData(Data.results);
-            //console.log('initial data: ' + wholeData);
+
             if(genre !== 'Genre'){
                 setData(Data.results?.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
@@ -61,7 +57,7 @@ const MovieList = () => {
             setData(prevData => [...prevData, ...filteredData]);
             const IDs = wholeData?.map(item => item.id);
             const filteredData = Data.results?.filter(item => !IDs?.includes(item.id));
-            //console.log(wholeData);
+
             if(genre !== 'Genre'){
                 setData(wholeData.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
@@ -138,26 +134,6 @@ const MovieList = () => {
         }
     }
 
-    useEffect(() => {
-        console.log('page: ' + page);
-    }, [page])
-
-    useEffect(() => {
-        console.log('wholeData: ', wholeData);
-    }, [wholeData]);
-
-    useEffect(() => {
-        console.log('data: ', data);
-    }, [data])
-
-    useEffect(() => {
-        console.log('liked: ', likedMovies);
-    }, [likedMovies]);
-
-    useEffect(() => {
-        console.log('watched: ', watchedMovies);
-    }, [watchedMovies]);
-
     const handleNowPlaying = () => {
         setDisplaySearch(false);
         setSearchQuery('');
@@ -178,7 +154,6 @@ const MovieList = () => {
         setSearchQuery(' ');
         setData(undefined);
         setPage(1);
-        //reset();
     }
 
     const toggleModal = (movie) => {
@@ -200,20 +175,12 @@ const MovieList = () => {
         setPage(1);
     }
 
-    const onLiked = (movie, liked) => {
-        if(!liked){
-            setLikedMovies(prevData => [...prevData, movie]);
-        } else {
-            setLikedMovies(prevData => prevData.filter((item) => item !== movie));
-        }
+    const onLikedFunction = (movie, liked) => {
+        props.onLiked(movie, liked);
     }
 
-    const onWatched = (movie, watched) => {
-        if(!watched){
-            setWatchedMovies(prevData => [...prevData, movie]);
-        } else {
-            setWatchedMovies(prevData => prevData.filter((item) => item !== movie));
-        }
+    const onWatchedFunction = (movie, watched) => {
+        props.onWatched(movie, watched);
     }
 
     return (
@@ -248,7 +215,7 @@ const MovieList = () => {
             <div className='movie-list-container'>
                 {data?.map((movie) => {
                     return (
-                        <MovieCard key={movie.id} props={movie} onModalToggle={toggleModal} onLiked={onLiked} onWatched={onWatched}/>
+                        <MovieCard key={movie.id} props={movie} onModalToggle={toggleModal} onLikedFunction={onLikedFunction} onWatchedFunction={onWatchedFunction}/>
                     )
                 })}
             </div>
