@@ -1,4 +1,27 @@
+.card-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    width: 15vw;
+    height: 50vh;
+}
+
+.card-overlay{
+    display: none;
+    position: absolute;
+    width: 15vw;
+    height: 50vh;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.card-main:hover .card-overlay{
+    display: block;
+}
+
 .card-container{
+    position: absolute;
     display: flex;
     flex-direction: column;
     width: 15vw;
@@ -6,16 +29,77 @@
     justify-content: center;
     align-items: center;
     background-color: lightgray;
-    z-index: 1;
 }
 
 .card-img-container{
     width: 100%;
-    height: 80%;
+    height: 70%;
 }
 
 .card-img {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.card-info{
+    height: 30%;
+    padding: 0 2rem;
+}
+
+.card-movie-title {
+    font-size: 1.4rem;
+}
+
+.card-icons {
+    display: none;
+    position: absolute;
+    z-index: 3;
+}
+
+.heart-icon{
+    display: none;
+    position: relative;
+    z-index: 3;
+    fill: rgba(211, 211, 211, 0.75);
+    width: 10rem;
+}
+
+.heart-icon-selected{
+    fill: rgb(255, 54, 54);
+}
+
+.heart-icon:hover{
+    fill: rgba(192, 31, 31, 0.75);
+}
+
+.heart-icon:active {
+    fill: rgba(184, 127, 127, 0.75);
+}
+
+.eye-icon{
+    display: none;
+    position:relative;
+    z-index: 3;
+    fill: rgba(211, 211, 211, 0.75);
+}
+
+.eye-icon-selected{
+    fill: rgba(15, 164, 251, 0.802);;
+}
+
+.eye-icon:hover{
+    fill: rgba(109, 199, 252, 0.802);
+}
+
+.eye-icon:active{
+    fill: rgba(183, 228, 254, 0.802);
+}
+
+.card-main:hover .heart-icon{
+    display: inline-flex;
+}
+
+.card-main:hover .eye-icon{
+    display: inline-flex;
 }

@@ -25,8 +25,10 @@ const Modal = ({movieID, onModalToggle}) => {
     const imageURL = `http://image.tmdb.org/t/p/original`;
 
     return (
-        <div className="modal-overlay" onClick={onModalToggle}>
-            <div className='modal-content'>
+        <div className='modal-container'>
+            <div className="modal-overlay" onClick={onModalToggle}>
+            </div>
+            <div className='modal-content' onClick={() => console.log('not overlay')}>
                 <div className='modal-main-content'>
                     <div>
                         <h1>{movie?.title}</h1>

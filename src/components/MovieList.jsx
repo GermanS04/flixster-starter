@@ -16,6 +16,8 @@ const MovieList = () => {
     const [genre, setGenre] = useState('');
     const [sort, setSort] = useState('');
     const [wholeData, setWholeData] = useState(undefined);
+    const [likedMovies, setLikedMovies] = useState([]);
+    const [watchedMovies, setWatchedMovies] = useState([]);
 
     const options = {
         method: 'GET',
@@ -24,11 +26,6 @@ const MovieList = () => {
             Authorization: `Bearer ${import.meta.env.VITE_TOKEN_AUTH}`
         }
     };
-
-    const reset = () => {
-        setPage(1);
-        setData(undefined);
-    }
 
     const sortMoviesSearch = () => {
         if(sort === 'popularity.desc'){
@@ -44,28 +41,31 @@ const MovieList = () => {
 
     const fetchData = async (URL) => {
         const resp = await fetch(URL + page.toString(), options);
+        console.log(URL + page.toString());
 
         const Data = await resp.json();
 
         if (page === 1){
-            reset();
+            console.log('condition page equals 1');
+            //reset();
             setData(Data.results);
             setWholeData(Data.results);
+            //console.log('initial data: ' + wholeData);
             if(genre !== 'Genre'){
                 setData(Data.results?.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
                 sortMoviesSearch();
             }
         } else {
+            setWholeData(prevData => [...prevData, ...filteredData]);
+            setData(prevData => [...prevData, ...filteredData]);
             const IDs = wholeData?.map(item => item.id);
             const filteredData = Data.results?.filter(item => !IDs?.includes(item.id));
-            setWholeData(prevData => [...prevData, ...filteredData]);
+            //console.log(wholeData);
             if(genre !== 'Genre'){
                 setData(wholeData.filter(item => item?.genre_ids?.includes(parseInt(genre))));
             } else if(sort !== "Sort"){
                 sortMoviesSearch();
-            } else {
-                setData(wholeData);
             }
         }
     }
@@ -128,12 +128,35 @@ const MovieList = () => {
 
     const handleSearchSubmit = () => {
         setPage(1);
+        setGenre('Genre');
+        setSort('Sort');
+        setData(undefined);
         if(searchQuery === ''){
-            reset();
+            setData(undefined);
         } else {
             fetchData(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US&page=`);
         }
     }
+
+    useEffect(() => {
+        console.log('page: ' + page);
+    }, [page])
+
+    useEffect(() => {
+        console.log('wholeData: ', wholeData);
+    }, [wholeData]);
+
+    useEffect(() => {
+        console.log('data: ', data);
+    }, [data])
+
+    useEffect(() => {
+        console.log('liked: ', likedMovies);
+    }, [likedMovies]);
+
+    useEffect(() => {
+        console.log('watched: ', watchedMovies);
+    }, [watchedMovies]);
 
     const handleNowPlaying = () => {
         setDisplaySearch(false);
@@ -143,7 +166,8 @@ const MovieList = () => {
         if(page === 1){
             fetchData('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=');
         } else {
-            reset();
+            setData(undefined);
+            setPage(1);
         }
     }
 
@@ -152,7 +176,9 @@ const MovieList = () => {
         setGenre('Genre');
         setSort('Sort');
         setSearchQuery(' ');
-        reset();
+        setData(undefined);
+        setPage(1);
+        //reset();
     }
 
     const toggleModal = (movie) => {
@@ -172,6 +198,22 @@ const MovieList = () => {
     const sortOnChange = (e) => {
         setSort(e.target.value);
         setPage(1);
+    }
+
+    const onLiked = (movie, liked) => {
+        if(!liked){
+            setLikedMovies(prevData => [...prevData, movie]);
+        } else {
+            setLikedMovies(prevData => prevData.filter((item) => item !== movie));
+        }
+    }
+
+    const onWatched = (movie, watched) => {
+        if(!watched){
+            setWatchedMovies(prevData => [...prevData, movie]);
+        } else {
+            setWatchedMovies(prevData => prevData.filter((item) => item !== movie));
+        }
     }
 
     return (
@@ -206,7 +248,7 @@ const MovieList = () => {
             <div className='movie-list-container'>
                 {data?.map((movie) => {
                     return (
-                        <MovieCard key={movie.id} props={movie} onModalToggle={toggleModal}/>
+                        <MovieCard key={movie.id} props={movie} onModalToggle={toggleModal} onLiked={onLiked} onWatched={onWatched}/>
                     )
                 })}
             </div>
