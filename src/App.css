@@ -119,9 +119,33 @@ main{
   background-color: #005858;
   height: 15vh;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   color: lightgray;
   padding: 0 5rem;
   font-size: 1.2rem;
+}
+
+.App-footer h4{
+  margin: 0 0 1rem 0;
+}
+
+.App-footer p{
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+}
+
+.footer-about{
+  width: 20%;
+  text-align: left;
+}
+
+.App-footer a{
+  color: white;
+  transition: color ease 0.5s;
+}
+
+.App-footer a:hover{
+  color: rgb(154, 153, 153);
+  cursor: pointer;
 }

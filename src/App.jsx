@@ -3,7 +3,7 @@ import './App.css'
 import MovieList from './components/MovieList'
 import Drawer from '@mui/material/Drawer';
 import { FiAlignLeft } from "react-icons/fi";
-
+import { FaInstagram } from "react-icons/fa";
 
 //import.meta.env.VITE_API_KEY
 
@@ -85,8 +85,29 @@ const App = () => {
         <MovieList onLiked={onLiked} onWatched={onWatched}/>
       </main>
       <footer className='App-footer'>
+        <div className='footer-about'>
+          <h4>
+            About
+          </h4>
+          <p>
+            Flixster is a movie app that allows you to search for movies and see details about them. You can also save movies to your liked list and watchlist.
+          </p>
+        </div>
         <div>
-        Copyright © 2024 Flixter
+          <h4>
+            Contact
+          </h4>
+          <p>
+            germansm@meta.com
+          </p>
+          <a href='https://www.instagram.com/german_gsm/'>
+            <FaInstagram size={30}/>
+          </a>
+        </div>
+        <div>
+          <h4>
+            Copyright © 2024 Flixter
+          </h4>
         </div>
       </footer>
     </div>
