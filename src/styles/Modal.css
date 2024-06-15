@@ -72,7 +72,7 @@
 }
 
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 800px){
     .modal-content{
         height: 90vh;
         width: 70vw;
