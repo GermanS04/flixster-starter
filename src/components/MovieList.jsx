@@ -2,6 +2,7 @@ import '../styles/MovieList.css';
 import { useState, useEffect } from 'react';
 import MovieCard from './MovieCard.jsx';
 import Modal from './Modal.jsx';
+import { FaFilm } from "react-icons/fa";
 
 
 const MovieList = (props) => {
@@ -10,14 +11,13 @@ const MovieList = (props) => {
     const [page, setPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [displaySearch, setDisplaySearch] = useState(false);
+    const [searched, setSearched] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMovie, setModalMovie] = useState(undefined);
     const [genresList, setGenresList] = useState(undefined);
     const [genre, setGenre] = useState('');
     const [sort, setSort] = useState('');
     const [wholeData, setWholeData] = useState(undefined);
-    //const [likedMovies, setLikedMovies] = useState([]);
-    //const [watchedMovies, setWatchedMovies] = useState([]);
 
     const options = {
         method: 'GET',
@@ -123,6 +123,7 @@ const MovieList = (props) => {
     }
 
     const handleSearchSubmit = () => {
+        setSearched(true);
         setPage(1);
         setGenre('Genre');
         setSort('Sort');
@@ -148,6 +149,7 @@ const MovieList = (props) => {
     }
 
     const handleSearchButton = () => {
+        setSearched(false);
         setDisplaySearch(true);
         setGenre('Genre');
         setSort('Sort');
@@ -184,18 +186,18 @@ const MovieList = (props) => {
     }
 
     return (
-        <div>
+        <div className='main-movie-list'>
             <div className='switch-buttons-container'>
                 <button className='switch-now-playing' onClick={handleNowPlaying}>Now Playing</button>
                 <button className='switch-search' onClick={handleSearchButton}>Search</button>
             </div>
             <div className='inputs-container'>
-            <div className={`search-bar-container ${displaySearch ? '' : 'search-bar-container-hide'}`}>
+                <div className={`search-bar-container ${displaySearch ? '' : 'search-bar-container-hide'}`}>
                     <input className='search-bar' type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search for a movie..."/>
                     <button className='search-bar-submit' onClick={handleSearchSubmit}>Submit</button>
                 </div>
                 <div>
-                    <select onChange={genreOnChange} value={genre}>
+                    <select className='select-buttons' onChange={genreOnChange} value={genre}>
                         <option value="Genre">Genre</option>
                         {genresList?.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
@@ -203,7 +205,7 @@ const MovieList = (props) => {
                     </select>
                 </div>
                 <div>
-                    <select onChange={sortOnChange} value={sort}>
+                    <select className='select-buttons' onChange={sortOnChange} value={sort}>
                         <option value="Sort">Sort By</option>
                         <option value="popularity.desc">Popularity</option>
                         <option value="original_title.asc">Title</option>
@@ -211,6 +213,14 @@ const MovieList = (props) => {
                         <option value="vote_average.asc">Lowest Rated</option>
                     </select>
                 </div>
+            </div>
+            <div>
+                {(!searched && (searchQuery === ' ' || searchQuery !== '')) &&
+                    <div className='no-search-container'>
+                        <FaFilm className='no-search-icon' size={150}/>
+                        <h1>Nothing to search for</h1>
+                    </div>
+                }
             </div>
             <div className='movie-list-container'>
                 {data?.map((movie) => {
@@ -220,7 +230,7 @@ const MovieList = (props) => {
                 })}
             </div>
             <div className='movie-load-button-container'>
-                <button className='movie-load-button' onClick={handleLoadMore}>Load More</button>
+                <button className='movie-load-button' onClick={handleLoadMore}>Load More +</button>
             </div>
             {modalOpen && <Modal movieID={modalMovie} onModalToggle = {toggleModal}/>}
         </div>

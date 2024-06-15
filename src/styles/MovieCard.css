@@ -3,17 +3,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5rem;
-    width: 15vw;
-    height: 50vh;
+    width: 12.5rem;
+    height: 40vh;
+    border-radius: 1rem;
+    transition: all ease 0.7s;
 }
 
 .card-overlay{
     display: none;
     position: absolute;
-    width: 15vw;
-    height: 50vh;
+    width: 12.5rem;
+    height: 40vh;
     background-color: rgba(0, 0, 0, 0.75);
+    border-radius: inherit;
+}
+
+.icons-list-watch-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .card-main:hover .card-overlay{
@@ -24,11 +32,21 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    width: 15vw;
-    height: 50vh;
+    width: 12.5rem;
+    height: 40vh;
     justify-content: center;
     align-items: center;
-    background-color: lightgray;
+    background-color: #ffffff;
+    border-radius: inherit;
+    box-shadow: 0px 0px 7px black;
+}
+
+.card-main:hover{
+    margin-top: -3rem;
+}
+
+.card-main:hover .card-container{
+    box-shadow: 0px 0px 30px aqua;
 }
 
 .card-img-container{
@@ -40,6 +58,7 @@
     object-fit: cover;
     width: 100%;
     height: 100%;
+    border-radius: 1rem 1rem 0 0;
 }
 
 .card-info{
@@ -48,7 +67,7 @@
 }
 
 .card-movie-title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
 }
 
 .card-icons {
@@ -62,15 +81,17 @@
     position: relative;
     z-index: 3;
     fill: rgba(211, 211, 211, 0.75);
-    width: 10rem;
+    transition: fill ease 0.3s;
 }
 
 .heart-icon-selected{
-    fill: rgb(255, 54, 54);
+    fill: rgb(251, 18, 18);
 }
+
 
 .heart-icon:hover{
     fill: rgba(192, 31, 31, 0.75);
+    cursor: pointer;
 }
 
 .heart-icon:active {
@@ -82,18 +103,20 @@
     position:relative;
     z-index: 3;
     fill: rgba(211, 211, 211, 0.75);
+    transition: fill ease 0.3s;
 }
 
 .eye-icon-selected{
-    fill: rgba(15, 164, 251, 0.802);;
+    fill: rgba(0, 232, 253);
 }
 
 .eye-icon:hover{
-    fill: rgba(109, 199, 252, 0.802);
+    fill: rgba(59, 181, 252, 0.75);
+    cursor: pointer;
 }
 
 .eye-icon:active{
-    fill: rgba(183, 228, 254, 0.802);
+    fill: rgba(183, 228, 254, 0.75);
 }
 
 .card-main:hover .heart-icon{
@@ -102,4 +125,17 @@
 
 .card-main:hover .eye-icon{
     display: inline-flex;
+}
+
+.rating-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 0fr;
+}
+
+.rating-container p{
+    margin: 0;
+    font-weight: bold;
+    font-size: 0.85rem;
 }

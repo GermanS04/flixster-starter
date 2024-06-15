@@ -24,17 +24,25 @@ const MovieCard = ({props: movie, onModalToggle, onLikedFunction, onWatchedFunct
                     <img className='card-img' src={imageURL}/>
                 </div>
                 <div className='card-info'>
-                    <h2 className='card-movie-title'>{movie.title}</h2>
-                    <h3>{movie.vote_average}</h3>
+                    <div>
+                        <h2 className='card-movie-title'>
+                            {movie?.title.length > 17 ? `${movie?.title.slice(0, 17)}...` : movie?.title}
+                        </h2>
+                    </div>
+                    <div className='rating-container'>
+                        <p>Rating: ⭐{movie.vote_average}</p>
+                    </div>
                 </div>
             </div>
             <div className='card-overlay' onClick={() => onModalToggle(movie)}/>
-            <span>
-                <FaHeart className={`heart-icon ${liked ? 'heart-icon-selected' : ''}`} onClick={() =>{likedToggle(); onLikedFunction(movie,liked); }} size={70}/>
-            </span>
-            <span>
-                <FaRegEye className={`eye-icon ${watched ? 'eye-icon-selected' : ''}`} onClick={() => {watchedToggle(); onWatchedFunction(movie, watched)}} size={70}/>
-            </span>
+            <div className='icons-list-watch-container'>
+                <div>
+                    <FaHeart className={`heart-icon ${liked ? 'heart-icon-selected' : ''}`} onClick={() =>{likedToggle(); onLikedFunction(movie,liked); }} size={70}/>
+                </div>
+                <div>
+                    <FaRegEye className={`eye-icon ${watched ? 'eye-icon-selected' : ''}`} onClick={() => {watchedToggle(); onWatchedFunction(movie, watched)}} size={70}/>
+                </div>
+            </div>
 
         </div>
     )

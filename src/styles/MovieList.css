@@ -12,16 +12,29 @@
     z-index: 0;
 }
 
+.main-movie-list button{
+    background-color: #004747;
+    border: solid 1px #008080;
+    transition: all ease 0.5s;
+}
+
+.main-movie-list button:hover{
+    background-color: #00e0e0;
+    cursor: pointer;
+}
+
 .movie-load-button-container{
     align-items: center;
     padding: 3rem 0;
 }
 
 .movie-load-button{
-    width: 7.5vw;
-    height: 4vh;
-    border: none;
+    width: 15vw;
+    height: 5.5vh;
     border-radius: 5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .inputs-container{
@@ -29,8 +42,8 @@
     flex-direction: row;
     gap: 2rem;
     height: 4vh;
-    padding: 2rem 0;
-    justify-content: center;
+    padding: 2rem 6rem 2rem 0;
+    justify-content: flex-end;
 }
 
 .search-bar{
@@ -40,6 +53,7 @@
     width: 35vw;
     border-radius: 5rem 0 0 5rem;
     padding-left: 2rem;
+    transition: all ease 0.5s;
 }
 
 .search-bar::placeholder{
@@ -47,19 +61,51 @@
 }
 
 .search-bar:focus{
+    background-color: #004747;
+    color: white;
     outline: none;
 }
 
 .search-bar-container-hide{
-    display: none
+    display: none;
 }
 
 .search-bar-submit{
-    border: none;
     height: 100%;
     width: 5vw;
     padding: 0;
     border-radius: 0 5rem 5rem 0;
+    color: white;
+    font-weight: bold;
+}
+
+.select-buttons{
+    background-color: #004747;
+    border: solid 1px #008080;
+    padding: 0.5rem 1rem;
+    border-radius: 5rem;
+    color: white;
+    font-weight: bold;
+    transition: all ease 0.5s;
+}
+
+.no-search-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55vh;
+    color: white;
+}
+
+.select-buttons:focus{
+    outline: white;
+}
+
+.select-buttons:hover{
+    background-color: #00e0e0;
+    cursor: pointer;
 }
 
 .switch-buttons-container {
@@ -72,5 +118,15 @@
 .switch-buttons-container button{
     border-radius: 5rem;
     padding: 0.5rem 1rem;
-    border: none;
+    width: 40%;
+    height: 5vh;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width: 500px){
+    .inputs-container{
+        padding: 2rem 2rem 2rem 0;
+    }
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import MovieList from './components/MovieList'
-import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+import { FiAlignLeft } from "react-icons/fi";
+
 
 //import.meta.env.VITE_API_KEY
 
@@ -71,18 +72,22 @@ const App = () => {
 
   return(
     <div className="App">
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
       <header className='App-header'>
-        <button onClick={toggleDrawer(true)}>Side</button>
-        <Drawer open={open} onClose={toggleDrawer(false)}>
-          {DrawerList}
-        </Drawer>
+        <div>
+          <FiAlignLeft className='icon-three-lines' onClick={toggleDrawer(true)} size={40}/>
+        </div>
         <h1>Flixster</h1>
       </header>
       <main>
         <MovieList onLiked={onLiked} onWatched={onWatched}/>
       </main>
       <footer className='App-footer'>
-
+        <div>
+        Copyright © 2024 Flixter
+        </div>
       </footer>
     </div>
   )
